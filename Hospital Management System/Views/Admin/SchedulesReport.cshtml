@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Hospital_Management_System.Models.Dto.SchedulesDto>
+
+@{
+    ViewBag.Title = "Schedules Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Schedule Report</li>
+        <li class="active"> Schedule Report</li>
+    </ol>
+</div>
+
+<h2> Appointments Report List</h2>
+
+<p>
+    @Html.ActionLink("DownLoad Report", "DownLoadScheduleReport", null, new { @class = "btn btn-primary" })
+</p>
+<table id="table_id" class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CentreName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PsychologistName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CentreName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PsychologistName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ScheduleDate)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#table_id").dataTable();
+        });
+    </script>
+}

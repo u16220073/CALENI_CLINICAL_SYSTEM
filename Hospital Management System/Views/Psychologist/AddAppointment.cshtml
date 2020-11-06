@@ -1,0 +1,192 @@
+﻿
+
+@model Hospital_Management_System.CollectionViewModels.AppointmentCollection
+
+@{
+    ViewBag.Title = "AddAppointment";
+    Layout = "~/Views/Shared/_PsychologistLayout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Appointment</li>
+        <li class="active">Add Appointment</li>
+    </ol>
+</div>
+
+<h2>Add Appointment</h2>
+
+
+<p>
+    @Html.ActionLink("====================================================Please Click Select Available time to book for your appointment!=============================================", "AddAppointment", null, new { @class = "btn btn-primary" })
+</p>
+
+
+<hr />
+
+
+
+<hr />
+
+<table id="table_id" class="table">
+    <tbody>
+        <tr>
+            @foreach (var productGroup in Model.Schedules.Select((e, i) => new { Product = e, Grouping = (i / 4) }).GroupBy(e => e.Grouping))
+            {
+            <tr>
+                @foreach (var product in productGroup.Select(x => x.Product))
+                {
+                    <td>
+
+                        <button button onclick="location.href='@Url.Action("CreateAppointment", new {id = product.Id})';return false;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="">@product.StartTime.ToShortTimeString() - @product.EndTime.ToShortTimeString()</button>
+
+                        @*<a href="@Url.Action("EditSchedule", new {id = product.Id})" class="fa fa-pencil-square-o" style="font-size: 19px"></a> |
+                            <a href="@Url.Action("DeleteSchedule", new {id = product.Id})" class="fa fa-trash" style="font-size: 19px; color: red"></a>*@
+                    </td>
+
+                }
+            </tr>
+        }
+            </tr>
+        </tbody>
+
+    </table>
+
+
+    <div>
+        @Html.ActionLink("Back to List", "ListOfAppointments")
+    </div>
+
+    @section scripts
+{
+        <script>
+            $(function () {
+                $("#dropdown").chosen();
+            });
+        </script>
+        @Scripts.Render("~/bundles/jqueryval")
+
+    }
+
+    @*@model Hospital_Management_System.CollectionViewModels.AppointmentCollection
+
+        @{
+            ViewBag.Title = "AddAppointment";
+            Layout = "~/Views/Shared/_PsychologistLayout.cshtml";
+        }
+
+        <div class="row">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="#">
+                        <em class="fa fa-home"></em>
+                    </a>
+                </li>
+                <li class="active">Appointment</li>
+                <li class="active">Add Appointment</li>
+            </ol>
+        </div>
+
+        <h2>Add Appointment</h2>
+
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+                <div class="col-md-10">
+                    @if (ViewBag.Messege != null)
+                    {
+                        <span class="text-danger">@ViewBag.Messege</span>
+                    }
+                    @Html.ValidationMessageFor(model => model.Appointment, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Appointment.PatientId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Appointment.PatientId, new SelectList(Model.Patients, "Id", "FullName"), "Select Patient", new { @id = "dropdown1", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Appointment.PatientId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Appointment.AppointmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Appointment.AppointmentDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @if (ViewBag.Messege != null)
+                    {
+                        <span class="text-danger">@ViewBag.Messege</span>
+                    }
+                    @Html.ValidationMessageFor(model => model.Appointment.AppointmentDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Appointment.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Appointment.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Appointment.StartTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Appointment.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Appointment.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Appointment.EndTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Appointment.Problem, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Appointment.Problem, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Appointment.Problem, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+        }
+
+        <div>
+            @if (Model.Appointment.Status)
+            {
+                @Html.ActionLink("Back to List", "ActiveAppointments")
+            }
+            else
+            {
+                @Html.ActionLink("Back to List", "Index")
+            }
+        </div>
+
+        @section scripts
+        {
+            @Scripts.Render("~/bundles/jqueryval")
+            <script>
+                $(function() {
+                    $("#dropdown1").chosen();
+                });
+            </script>
+        }*@

@@ -1,0 +1,107 @@
+﻿@using Hospital_Management_System.Models
+@model Hospital_Management_System.CollectionViewModels.ScheduleCollection
+
+@{
+    ViewBag.Title = "AddAppointment";
+    Layout = "~/Views/Shared/_PsychologistLayout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Appointment</li>
+        <li class="active">Add Appointment</li>
+    </ol>
+</div>
+
+<h2>Add Appointment</h2>
+
+<div class="form-horizontal">
+    <hr />
+    <div class="form-group">
+        <div class="col-md-10">
+            @if (ViewBag.Messege != null)
+            {
+                <span class="text-danger">@ViewBag.Messege</span>
+            }
+            @Html.ValidationMessageFor(model => model.Schedule, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <hr />
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Schedule.Id)
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+   
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Schedule.PatientId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Schedule.PatientId, new SelectList(Model.Patients, "Id", "FullName"), "Select Patient", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Schedule.PatientId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Schedule.ScheduleDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Schedule.ScheduleDate, new { htmlAttributes = new { @class = "form-control" } })
+            @if (ViewBag.Messege != null)
+            {
+                <span class="text-danger">@ViewBag.Messege</span>
+            }
+            @Html.ValidationMessageFor(model => model.Schedule.ScheduleDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Schedule.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Schedule.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Schedule.StartTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Schedule.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Schedule.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Schedule.EndTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Problem, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Problem, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Problem, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit Appointment" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ListOfSchedules")
+</div>

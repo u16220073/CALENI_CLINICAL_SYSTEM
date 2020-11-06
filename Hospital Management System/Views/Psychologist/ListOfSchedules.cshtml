@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Hospital_Management_System.Models.Dto.SchedulesDto>
+
+@{
+    ViewBag.Title = "ListOfSchedules";
+    Layout = "~/Views/Shared/_PsychologistLayout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Schedule</li>
+        <li class="active">List of Schedules</li>
+    </ol>
+</div>
+
+<h2>List Of Schedules</h2>
+
+
+<table id="table_id" class="table">
+    <tbody>
+        <tr>
+            @foreach (var productGroup in Model.Select((e, i) => new { Product = e, Grouping = (i / 4) }).GroupBy(e => e.Grouping))
+            {
+            <tr>
+                @foreach (var product in productGroup.Select(x => x.Product))
+                {
+                    <td>
+                        <button class="btn btn-success" type="button">@product.StartTime.ToShortTimeString() - @product.EndTime.ToShortTimeString() </button>
+                        <a href="@Url.Action("EditSchedule", new {id = product.Id})" class="fa fa-pencil-square-o" style="font-size: 19px"></a> |
+                        <a href="@Url.Action("DeleteSchedule", new {id = product.Id})" class="fa fa-trash" style="font-size: 19px; color: red"></a>
+                    </td>
+                 }
+            </tr>
+        }
+            </tr>
+        </tbody>
+
+    </table>
+
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                $("#table_id").dataTable();
+            });
+        </script>
+    }

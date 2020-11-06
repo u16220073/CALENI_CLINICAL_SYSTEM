@@ -1,0 +1,58 @@
+﻿@model Hospital_Management_System.Models.Schedule
+
+@{
+    ViewBag.Title = "ScheduleDetail";
+    Layout = "~/Views/Shared/_PsychologistLayout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Schedule</li>
+        <li class="active">Your Schedule</li>
+    </ol>
+</div>
+
+<h2>Schedule Detail</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduleDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ScheduleDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+
+        <dd>
+           @Model.StartTime.ToShortTimeString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+
+        <dd>
+            @Model.EndTime.ToShortTimeString()
+        </dd>
+        <dt>
+            Edit
+        </dt>
+
+        <dd>
+            <a href="@Url.Action("EditSchedule", new {id = Model.Id})" class="fa fa-pencil-square-o" style="font-size: 19px"></a>
+        </dd>
+    </dl>
+</div>
+

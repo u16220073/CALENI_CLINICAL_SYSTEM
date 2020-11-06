@@ -1,0 +1,158 @@
+﻿@using System.Web.UI.WebControls
+@using Hospital_Management_System.Models
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<header id="Home">
+    <nav>
+        <div class="row">
+            <img src="~/Content/Layout/resources/img/CP.png" alt="HMS logo" class="logo">
+            <img src="~/Content/Layout/resources/img/CP.png" alt="HMS logo" class="logo-black">
+            <ul class="main-nav js-main-nav">
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                <li><a href="@Url.Action("Login", "Account")">Sign In</a></li>
+            </ul>
+            <a class="mobile-nav-icon js-mobile-nav-icon"><i class="ion-ios-menu"></i></a>
+        </div>
+    </nav>
+    <div class="hero-text-box">
+        <h1>Caleni Clinical Psychologist<br> Practice.</h1>
+        <br>
+        <a class="btn btn-ghost js-scroll-to-start" href="#">Show me more</a>
+    </div>
+</header>
+
+<section class="section-features js-section-features" id="services">
+    <div class="row">
+        <h2>Services</h2>
+        <p class="long-copy"> Clinical Psychologis Practice. We have best services for our patients and manage them.</p>
+    </div>
+    <div class="row js-wp-1">
+        
+        <div class="col span-1-of-2 box for-icons">
+            <i class="icon ion-md-call"></i>
+            <h3>Call Center 24/7</h3>
+            <p>Our agents are on hand 24 hours a day, 7 days a week, and 365 days a year. There is always a courteous, live-voice representative ready to assist your patients and their families, whatever their needs may be.</p>
+        </div>
+       
+        <div class="col span-1-of-2 box for-icons">
+            <i class="icon ion-md-checkmark-circle-outline"></i>
+            <h3>Appointment</h3>
+            <p>We are happy to announce that our online appointment booking system is developed and launched. Please check back soon for more updates.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-steps" id="about">
+    <div class="row">
+        <h2>About Us &mdash; Our Vision</h2>
+    </div>
+    <div class="row">
+        <div class="col span-1-of-2 step-box">
+            <img src="~/Content/Layout/resources/img/CP.png" alt="Omnifood app on iphone" class="app-screen js-wp-2">
+        </div>
+        <div class="col span-1-of-2 step-box">
+            <div class="works-step">
+                <div>1</div>
+                <p>Clinical Psychologist Practice (CPP) is open to all patients every day and provides fundamental  care and Cancelling.</p>
+            </div>
+            <div class="works-step">
+                <div>2</div>
+                <p>We use our academic knowledge to treat a wide range of health issues, taking a personal touch and utilizing highly specialized and up-to-date research.</p>
+            </div>
+            <div class="works-step">
+                <div>3</div>
+                <p>
+                    We will innovate and define the future of health care for generations
+                    and will be the consumer's first choice for Psychologist Practice.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-cities" id="cities">
+    <div class="row">
+        <h2>We're currently in these Centre</h2>
+    </div>
+    <div class="row js-wp-3">
+
+        <div class="col span-1-of-2 box">
+            <img src="~/Content/Layout/resources/img/xx.jpeg" alt="lisbon">
+            <h3>CureWise</h3>
+            <div class="city-feature">
+                <i class="icon ion-logo-facebook small-icons"></i>
+                <a href="#">CPP_CureWiseo</a>
+            </div>
+        </div>
+        <div class="col span-1-of-2 box">
+            <img src="~/Content/Layout/resources/img/xxx.jpeg" alt="lisbon">
+            <h3>Dinoko</h3>
+            <div class="city-feature">
+                <i class="icon ion-logo-facebook small-icons"></i>
+                <a href="#">CPP_Dinoko</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section-testimonials" id="reviews">
+    <div class="row">
+        <h2>Our patients can't live without us</h2>
+    </div>
+    <div class="row">
+        <div class="col span-1-of-3">
+            <blockquote>CPP is just awesome! I just launched a startup which leaves me with no time for Psychologist, so CPP is a life-saver. Now that I got used to it</blockquote>
+            <cite><img src="~/Content/Layout/resources/img/chulu.jpeg" alt="first-customer">Chulu Sishuba</cite>
+        </div>
+        <div class="col span-1-of-3">
+            <blockquote>
+                We as a family have always had the very best treatment we could possibly get at
+                Good Hope Clinical  Psychologist and could not criticise in any way. Administrator, Psychologist and  helpers all do a fabulous job. Well done to you all and you all deserve a medal.
+            </blockquote>
+            <cite><img src="~/Content/Layout/resources/img/Leratocust.jpeg" alt="first-customer">Lerato Kutu</cite>
+        </div>
+        <div class="col span-1-of-3">
+            <blockquote>Treated well, Psychologist and had everything clearly explained throughout the procedures.
+                Explained what was happening throughout and treated with compassion and cheerfulness.</blockquote>
+            <cite><img src="~/Content/Layout/resources/img/cust.jpeg" alt="first-customer">Lindokuhle </cite>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="row">
+        <div class="col span-1-of-2">
+            <ul class="footer-nav">
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Press</a></li>
+                <li><a href="#">IOS App</a></li>
+                <li><a href="#">Andriod App</a></li>
+            </ul>
+        </div>
+        <div class="col span-1-of-2">
+            <ul class="social-links">
+                <li><a href="#"><i class="ion-logo-facebook"></i></a></li>
+                <li><a href="#"><i class="ion-logo-twitter"></i></a></li>
+                <li><a href="#"><i class="ion-logo-googleplus"></i></a></li>
+                <li><a href="#"><i class="ion-logo-instagram"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <p> Copyright &copy; @DateTime.Now.Year by  CPP. All rights reserved.</p>
+    </div>
+</footer>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

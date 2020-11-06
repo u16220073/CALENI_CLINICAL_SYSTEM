@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Hospital_Management_System.Models.Dto.PaymentDto>
+
+@{
+    ViewBag.Title = "ListOfAppointments";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Payment</li>
+        <li class="active">Payment List </li>
+    </ol>
+</div>
+
+<h2> List Of Payment</h2>
+
+<p>
+    @Html.ActionLink("Create New", "AddPayment", null, new { @class = "btn btn-primary" })
+</p>
+<table id="table_id" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceRefNo)
+            </th>
+            <th>
+                Psychologist Name
+            </th>
+            <th>
+                Patient Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceRecived)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalDue)
+            </th>
+            <th>View Invice</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceRefNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PsychologistName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceRecived)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDue)
+            </td>
+            <td>
+                <a href="@Url.Action("ViewPaymentInvoice", new {id = item.Id})" class="fa fa-book" style="font-size: 19px; color: lightblue"></a> 
+            </td>
+
+        </tr>
+
+         }
+    </tbody>
+
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#table_id").dataTable();
+        });
+    </script>
+}
