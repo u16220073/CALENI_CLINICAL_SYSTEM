@@ -481,7 +481,7 @@ namespace Hospital_Management_System.Controllers
             patient.DateOfBirth = model.DateOfBirth;
             patient.EmailAddress = model.EmailAddress;
             patient.Gender = model.Gender;
-            patient.PhoneNo = model.PhoneNo;
+            //patient.PhoneNo = model.PhoneNo;
             db.SaveChanges();
             return RedirectToAction("ListOfPatients");
         }

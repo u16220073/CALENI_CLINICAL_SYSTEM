@@ -20,8 +20,8 @@
                     <div>
                         @Html.ValidationSummary("", new { @class = "text-danger" })
                         <div>
-                            <label for="name">User Name<span style="color: red; font-weight: bold">*</span></label>
-                            @Html.TextBoxFor(m => m.Email, new { @placeholder="UserName", id="name" })
+                            <label for="name">User Email<span style="color: red; font-weight: bold">*</span></label>
+                            @Html.TextBoxFor(m => m.Email, new { @placeholder="User Email", id="name" })
                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                         </div>
                         <div>
@@ -36,7 +36,7 @@
                         </div>
                         <br />
                         <p>
-                            @Html.ActionLink("Forgot your password?", "ForgotPassword", new {@disabled = "disabled"})
+                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
                         </p>
                         <br />
                         <p>

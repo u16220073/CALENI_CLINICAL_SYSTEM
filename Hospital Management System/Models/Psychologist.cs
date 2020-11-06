@@ -32,10 +32,13 @@ namespace Hospital_Management_System.Models
         public int DepartmentId { get; set; }
 
         public string Address { get; set; }
+
+        [Phone]
         [Display(Name = "Phone No")]
         public string PhoneNo { get; set; }
 
         [Required]
+        [Phone]
         [Display(Name = "Mobile No")]
         public string ContactNo { get; set; }
 

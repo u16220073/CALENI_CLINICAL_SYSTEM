@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using Hospital_Management_System.Common;
 
 namespace Hospital_Management_System.Models
 {
@@ -26,9 +24,13 @@ namespace Hospital_Management_System.Models
         [EmailAddress]
         [Display(Name = "Email Id")]
         public string EmailAddress { get; set; }
+       
+        [Phone]
         [Display(Name = "Phone No")]
         public string PhoneNo { get; set; }
         public string Contact { get; set; }
+
+
 
         [Display(Name = "Age")]
         public int Age { get; set; }
@@ -40,13 +42,18 @@ namespace Hospital_Management_System.Models
         public string Language { get; set; }
 
         public string Gender { get; set; }
+
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DateRange("1990/01/01")]
         public DateTime? DateOfBirth { get; set; }
+
         public string Address { get; set; }
+
         [Display(Name = "Marital Status ")]
         public string MaritalStatus { get; set; }
 
     }
+
 }

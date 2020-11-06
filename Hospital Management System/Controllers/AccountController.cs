@@ -61,7 +61,7 @@ namespace Hospital_Management_System.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            //ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -193,6 +193,12 @@ namespace Hospital_Management_System.Controllers
                     var patient = new Patient { FirstName = model.FirstName, LastName = model.LastName, EmailAddress = model.Email, ApplicationUserId = user.Id };
                     db.Patients.Add(patient);
                     db.SaveChanges();
+
+                    //to manually add psychologist
+                    //var psychologist = new Psychologist { FirstName = model.FirstName, LastName = model.LastName, EmailAddress = model.Email, ApplicationUserId = user.Id };
+                    //db.Psychologists.Add(psychologist);
+                    //db.SaveChanges();
+
                     await UserManager.AddToRoleAsync(user.Id, "Patient");
                     return RedirectToAction("Login", "Account");
                 }
@@ -228,113 +234,76 @@ namespace Hospital_Management_System.Controllers
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
-      
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        [AllowAnonymous]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-
-                var userEmail =  UserManager.Users.FirstOrDefault(x => x.Email == model.Email).Email;
-                var Username = UserManager.Users.FirstOrDefault(x => x.Email == model.Email).UserName;
-
-                if (userEmail != null )
+                try
                 {
-                   
-                    string resetCode = Guid.NewGuid().ToString();
-                    var verifyUrl = "/Account/ResetPassword/" + resetCode;
-                    var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+                    var User = UserManager.Users.FirstOrDefault(x => x.Email == model.Email);
+                    //var Username = UserManager.Users.FirstOrDefault(x => x.Email == model.Email).UserName;
 
-                    var subject = "Password Reset Request";
-                    var body = "Hi " + Username + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " +
+                    if (User != null)
+                    {
 
-                         " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" +
-                         "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
+                        string resetCode = Guid.NewGuid().ToString();
+                        var verifyUrl = "/Account/ResetPassword/?code=" + resetCode;
+                        var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
-                    SendEmail(userEmail, body, subject);
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
-                else
+                        var subject = "Password Reset Request";
+                        var body = "Hi " + User.UserName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " +
+
+                             " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" +
+                             "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
+
+                        ViewBag.Message = SendEmail(User.Email, body, User.UserName);
+                        // Don't reveal that the user does not exist or is not confirmed
+                        return View("ForgotPasswordConfirmation");
+                    }
+                    
+                }catch(Exception error)
                 {
-                    ViewBag.Message = "Reset password link has been sent to your email id.";
+                    Console.Write("Error: " + error.Message);
+                    ViewBag.Message = "Oops! Something went wrong. Please contact celeni@support.co.za";
                 }
 
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        public string SendEmail(string Email, string Message, string Subject )
+        public string SendEmail(string Email, string Message, string UserName )
         {
 
             try
             {
-                // Credentials
-                var credentials = new NetworkCredential("celanipyc@gmail.com", "111111Sp/");
-
-                // Mail message
-                var mail = new MailMessage()
+                using (MailMessage mail = new MailMessage())
                 {
-                    From = new MailAddress("noreply@codinginfinite.com"),
-                    Subject = Subject,
-                    Body = Message
-                };
+                    mail.From = new MailAddress("celanipyc@gmail.com"); //your email goes here
+                    mail.To.Add(Email);
+                    mail.Subject = "Password Reset Request";
+                    mail.Body = Message;
+                    mail.IsBodyHtml = true;
 
-                mail.IsBodyHtml = true;
-                mail.To.Add(new MailAddress(Email));
-
-                // Smtp client
-                var client = new SmtpClient()
-                {
-                    Port = 587,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Host = "smtp.gmail.com",
-                    EnableSsl = true,
-                    Credentials = credentials
-                };
-
-                client.Send(mail);
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("celanipyc@gmail.com", "111111Sp/");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
 
                 return "Email Sent Successfully!";
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 return e.Message;
             }
 
         }
 
-        //private void SendEmail(string emailAddress, string body, string subject)
-        //{
-        //    using (MailMessage mm = new MailMessage("celanipyc@gmail.com", emailAddress))
-        //    {
-        //        mm.Subject = subject;
-        //        mm.Body = body;
-        //        mm.IsBodyHtml = true;
-        //        mm.Priority = MailPriority.High;
-        //        SmtpClient smtp = new SmtpClient();
-        //        smtp.Host = "smtp.gmail.com";
-        //        smtp.EnableSsl = true;
-        //        smtp.UseDefaultCredentials = true;
-        //        NetworkCredential NetworkCred = new NetworkCredential("celanipyc@gmail.com", "111111Sp/");
-        //        smtp.EnableSsl = true;
-        //        smtp.Credentials = NetworkCred;
-        //        smtp.Port = 587;
-        //        smtp.Send(mm);
-
-        //    }
-        //}
-
-        //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
@@ -345,6 +314,7 @@ namespace Hospital_Management_System.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
+        [Route("Account/ResetPassword/{code}")]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
@@ -355,19 +325,19 @@ namespace Hospital_Management_System.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = UserManager.Users.FirstOrDefault(x => x.Email == model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var result = UserManager.ResetPassword(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");

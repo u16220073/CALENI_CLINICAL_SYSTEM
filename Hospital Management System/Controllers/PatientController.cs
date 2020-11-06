@@ -74,7 +74,7 @@ namespace Hospital_Management_System.Controllers
             patient.Language = model.Language;
             patient.DateOfBirth = model.DateOfBirth;
             patient.Gender = model.Gender;
-            patient.PhoneNo = model.PhoneNo;
+            //patient.PhoneNo = model.PhoneNo;
             db.SaveChanges();
 
             string audiuserName = User.Identity.GetUserName();
