@@ -121,6 +121,8 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -253,6 +255,11 @@
     <Compile Include="CollectionViewModels\PrescriptionCollection.cs" />
     <Compile Include="CollectionViewModels\ScheduleCollection.cs" />
     <Compile Include="Common\DateRangeAttribute.cs" />
+    <Compile Include="Connected Services\ASPSMSX2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CelaniController1.cs" />
@@ -270,6 +277,10 @@
     <Compile Include="Migrations\202010191557303_removeProperty.cs" />
     <Compile Include="Migrations\202010191557303_removeProperty.Designer.cs">
       <DependentUpon>202010191557303_removeProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011081821118_proPic.cs" />
+    <Compile Include="Migrations\202011081821118_proPic.Designer.cs">
+      <DependentUpon>202011081821118_proPic.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -320,6 +331,15 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\ASPSMSX2\configuration91.svcinfo" />
+    <None Include="Connected Services\ASPSMSX2\configuration.svcinfo" />
+    <Content Include="Connected Services\ASPSMSX2\Hospital_Management_System.ASPSMSX2.vouchers.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\ASPSMSX2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Chosen\chosen-sprite.png" />
@@ -511,6 +531,7 @@
     <Content Include="Content\Layout\vendors\fonts\ionicons.ttf" />
     <Content Include="Content\Layout\vendors\fonts\ionicons.woff" />
     <Content Include="Content\Layout\vendors\fonts\ionicons.woff2" />
+    <None Include="Connected Services\ASPSMSX2\aspsmsx2.wsdl" />
     <None Include="Properties\PublishProfiles\Usman.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -711,6 +732,7 @@
     <None Include="Views\Admin\ListOfAudits.cshtml" />
     <Content Include="Views\Admin\SchedulesReport.cshtml" />
     <Content Include="Views\Admin\PatientsReport.cshtml" />
+    <Content Include="Views\Home\ComplaintHelp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -732,6 +754,9 @@
     <EmbeddedResource Include="Migrations\202010191557303_removeProperty.resx">
       <DependentUpon>202010191557303_removeProperty.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011081821118_proPic.resx">
+      <DependentUpon>202011081821118_proPic.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\AppointmentReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AppointmentReport.cs</LastGenOutput>
@@ -747,6 +772,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\ASPSMSX2\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

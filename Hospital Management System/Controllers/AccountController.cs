@@ -177,32 +177,40 @@ namespace Hospital_Management_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, UserRole = "Patient", RegisteredDate = DateTime.Now.Date};
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, UserRole = "Patient", RegisteredDate = DateTime.Now.Date };
+                    var result = await UserManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    var patient = new Patient { FirstName = model.FirstName, LastName = model.LastName, EmailAddress = model.Email, ApplicationUserId = user.Id };
-                    db.Patients.Add(patient);
-                    db.SaveChanges();
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, Code = code }, protocol: Request.Url.Scheme);
+                        var body = "<h1>Welcome to The Celani Clinical Psychology System</h1> <br> Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                        var patient = new Patient { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = new DateTime(1999,1,1),  EmailAddress = model.Email, ApplicationUserId = user.Id };
+                        db.Patients.Add(patient);
+                        db.SaveChanges();
+                        var Subject = "Registration Successful";
+                        ViewBag.Message = SendEmail(model.Email, body, Subject);
 
-                    //to manually add psychologist
-                    //var psychologist = new Psychologist { FirstName = model.FirstName, LastName = model.LastName, EmailAddress = model.Email, ApplicationUserId = user.Id };
-                    //db.Psychologists.Add(psychologist);
-                    //db.SaveChanges();
+                        //to manually add psychologist
+                        //var psychologist = new Psychologist { FirstName = model.FirstName, LastName = model.LastName, EmailAddress = model.Email, ApplicationUserId = user.Id };
+                        //db.Psychologists.Add(psychologist);
+                        //db.SaveChanges();
 
-                    await UserManager.AddToRoleAsync(user.Id, "Patient");
-                    return RedirectToAction("Login", "Account");
+                        await UserManager.AddToRoleAsync(user.Id, "Patient");
+                        return RedirectToAction("Login", "Account");
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+            }catch(Exception error)
+            {
+                Console.WriteLine(error.Message);
             }
            
             // If we got this far, something failed, redisplay form
@@ -246,18 +254,15 @@ namespace Hospital_Management_System.Controllers
 
                     if (User != null)
                     {
-
-                        string resetCode = Guid.NewGuid().ToString();
-                        var verifyUrl = "/Account/ResetPassword/?code=" + resetCode;
+                        //var code = await UserManager.GeneratePasswordResetTokenAsync(User.Id);
+                        var verifyUrl = "/Account/ResetPassword/?code=" + User.Id;
                         var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
-                        var subject = "Password Reset Request";
                         var body = "Hi " + User.UserName + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " +
-
                              " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" +
                              "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
-
-                        ViewBag.Message = SendEmail(User.Email, body, User.UserName);
+                        var Subject = "Password Reset Request";
+                        ViewBag.Message = SendEmail(User.Email, body, Subject);
                         // Don't reveal that the user does not exist or is not confirmed
                         return View("ForgotPasswordConfirmation");
                     }
@@ -274,7 +279,7 @@ namespace Hospital_Management_System.Controllers
             return View(model);
         }
 
-        public string SendEmail(string Email, string Message, string UserName )
+        public string SendEmail(string Email, string Message, string sub )
         {
 
             try
@@ -283,12 +288,13 @@ namespace Hospital_Management_System.Controllers
                 {
                     mail.From = new MailAddress("celanipyc@gmail.com"); //your email goes here
                     mail.To.Add(Email);
-                    mail.Subject = "Password Reset Request";
+                    mail.Subject = sub;
                     mail.Body = Message;
                     mail.IsBodyHtml = true;
 
                     using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                     {
+                        //your email and password as a sender goes here
                         smtp.Credentials = new NetworkCredential("celanipyc@gmail.com", "111111Sp/");
                         smtp.EnableSsl = true;
                         smtp.Send(mail);
@@ -325,7 +331,7 @@ namespace Hospital_Management_System.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -337,7 +343,10 @@ namespace Hospital_Management_System.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = UserManager.ResetPassword(user.Id, model.Code, model.Password);
+
+            //error here: always produces invalid token error
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            //suggeseted hack: manually change password (edit style)
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");

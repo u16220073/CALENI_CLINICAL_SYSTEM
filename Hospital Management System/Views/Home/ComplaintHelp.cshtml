@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "ComplaintHelp";
+}
+<style>
+    #videoPlayer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .video-container {
+        position: relative;
+        margin: 0 auto !important;
+        box-shadow: 4px 6px 10px 4px rgba(0,0,0,0.4);
+        padding-bottom: 47.25%;
+        height: 0;
+    }
+    h2{
+        margin-top: 1em;
+    }
+</style>
+<h2>Complaint Help Center</h2>
+<div class="row">
+    <div class="text-center video-container col-xs-12"  >
+        <video class="col-xs-12"  src="~/Content/Help/fullhelpVideo.mp4" controls id="videoPlayer" >
+            This Browser does not support HTML5 video tag. Try Google Chrome, Firefox, Safari or Brave.
+        </video>
+    </div>
+<span style="margin-top: 2em; color:#fff;">text</span>
+</div>

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -27,7 +23,15 @@ namespace Hospital_Management_System
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your SMS service here to send a text message.
+            //Plug in your SMS service here to send a text message.
+           var soapSms = new Hospital_Management_System.ASPSMSX2.ASPSMSX2SoapClient("ASPSMSX2Soap");
+            soapSms.SendSimpleTextSMS(
+                System.Configuration.ConfigurationManager.AppSettings["ETKNUDV7W98Y"],
+                System.Configuration.ConfigurationManager.AppSettings["codnamspsje20DEV20P2!"],
+                message.Destination,
+                System.Configuration.ConfigurationManager.AppSettings["+27843262153"],
+                message.Body);
+            soapSms.Close();
             return Task.FromResult(0);
         }
     }

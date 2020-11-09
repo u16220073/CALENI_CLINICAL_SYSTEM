@@ -21,6 +21,9 @@ namespace Hospital_Management_System.Models
         [Display(Name = "Name")]
         public string FullName { get; set; }
 
+        [Display(Name = "Profile Picture")]
+        public string ProPic { get; set; }
+
         [EmailAddress]
         [Display(Name = "Email Id")]
         public string EmailAddress { get; set; }

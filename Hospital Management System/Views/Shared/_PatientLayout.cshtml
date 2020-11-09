@@ -36,7 +36,14 @@
     <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
         <div class="profile-sidebar">
             <div class="profile-userpic">
-                <img src="~/Content/img/Administrator.png" class="img-responsive" alt="">
+                @if (ViewBag.Pic != null)
+                {
+                    <img src="~/Content/img/@ViewBag.Pic" class="img-responsive" alt="profile-picture"> 
+                }
+                @*else
+                {
+                    <img src="~/Content/img/Administrator.png" class="img-responsive" alt="profile-picture">
+                }*@
             </div>
             <div class="profile-usertitle">
                 <div class="profile-usertitle-name">@User.Identity.Name</div>
@@ -74,13 +81,6 @@
                 </div>
             </li>
 
-            @*<li>
-                <button class="collapsible"><em class="fa fa-hospital-o">&nbsp; &nbsp;</em>Treatment Plan</button>
-                <div style="width: 100% !important" class="children content">
-                    @Html.ActionLink("Your Treatment Plan", "ListOfPrescription", "Patient", null, new { @class = "list-group-item", @style = "margin: 0px -20px; font-size: 13px" })
-                </div>
-            </li>*@
-
             <li>
                 <button class="collapsible"><em class="fa fa-telegram">&nbsp; &nbsp;</em>Complaint</button>
                 <div style="width: 100% !important" class="children content">
@@ -93,6 +93,14 @@
                 <button class="collapsible"><em class="fa fa-cog">&nbsp; &nbsp;</em>Manage</button>
                 <div style="width: 100% !important" class="children content">
                     @Html.ActionLink("Change Password", "ChangePassword", "Manage", null, new { @class = "list-group-item", @style = "margin: 0px -20px; font-size: 13px" })
+                </div>
+            </li>
+
+            <li>
+
+                <button class="collapsible"><em class="fa fa-question">&nbsp; &nbsp;</em>Help</button>
+                <div style="width: 100% !important" class="children content">
+                    @Html.ActionLink("Help", "ComplaintHelp", "Home", null, new { @class = "list-group-item", @style = "margin: 0px -20px; font-size: 13px" })
                 </div>
             </li>
             @Html.Partial("_LoginPartial")

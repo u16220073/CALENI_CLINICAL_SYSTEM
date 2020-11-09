@@ -13,5 +13,10 @@ namespace Hospital_Management_System.Controllers
         {
             return View();
         }
+
+        public ActionResult ComplaintHelp()
+        {
+            return View();
+        }
     }
 }
